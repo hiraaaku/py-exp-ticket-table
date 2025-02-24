@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Data</h1>
+        <form method="GET">
+            <div class="filters">
+                <label for="start_date">Start Date:</label>
+                <input type="date" id="start_date" name="start_date">
+
+                <label for="end_date">End Date:</label>
+                <input type="date" id="end_date" name="end_date">
+
+                <label for="department">Department:</label>
+                <select id="department" name="department">
+                    <option value="">Select Department</option>
+                    <option value="Dept A">Dept A</option>
+                    <option value="Dept B">Dept B</option>
+                </select>
+
+                <label for="project">Project:</label>
+                <select id="project" name="project">
+                    <option value="">Select Project</option>
+                    <option value="Project 1">Project 1</option>
+                    <option value="Project 2">Project 2</option>
+                </select>
+
+                <button type="submit">Filter</button>
+            </div>
+        </form>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Nama</th>
+                    <th>Bug Internal</th>
+                    <th>Bug External</th>
+                    <th>Total Bug</th>
+                    <th>Support Internal</th>
+                    <th>Support External</th>
+                    <th>Total Support</th>
+                    <th>IOW</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in data %}
+                    <tr>
+                        <td>{{ item['Nama'] }}</td>
+                        <td>
+                            <button class="bug-internal-btn"
+                              data-documentno="{{ item['Bug Internal of Assignee'] | default([]) | join(',') }}">
+                              {{ item['Bug Internal'] }}
+                            </button>
+                        </td>                        
+                        <td>{{ item['Bug External'] }}</td>
+                        <td>{{ item['Bug Internal'] + item['Bug External'] }}</td>
+                        <td>{{ item['Support Internal'] }}</td>
+                        <td>{{ item['Support External'] }}</td>
+                        <td>{{ item['Support Internal'] + item['Support External'] }}</td>
+                        <td>{{ item['IOW'] }}</td>
+                        <td>{{ item['Bug Internal'] + item['Bug External'] + item['Support Internal'] + item['Support External'] + item['IOW'] }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="pagination-container">
+            <div class="pagination">
+                <span>Total Data: {{ total_data }}</span>
+                <div class="pages">
+                    {% set page = page | default(1) %}
+                    {% if page > 1 %}
+                        <a href="?page={{ page - 1 }}&sort_by={{ sort_by }}&order={{ order }}">Prev</a>
+                    {% endif %}
+                    {% for p in range(1, total_pages + 1) %}
+                        <a href="?page={{ p }}&sort_by={{ sort_by }}&order={{ order }}" class="{{ 'active' if p == page else '' }}">{{ p }}</a>
+                    {% endfor %}
+                    {% if page < total_pages %}
+                        <a href="?page={{ page + 1 }}&sort_by={{ sort_by }}&order={{ order }}">Next</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="documentNoModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>DocumentNo List</h2>
+            <ul id="documentNoList"></ul>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const modal = document.getElementById("documentNoModal");
+            const modalContent = document.getElementById("documentNoList");
+            const closeModal = document.querySelector(".close");
+    
+            document.querySelectorAll(".bug-internal-btn").forEach(button => {
+                button.addEventListener("click", function () {
+                    let documentNos = this.getAttribute("data-documentno");
+    
+                    if (!documentNos || documentNos.trim() === "") {
+                        modalContent.innerHTML = "<li>(No DocumentNo found)</li>";
+                    } else {
+                        let docList = documentNos.split(",").map(doc => `<li>${doc.trim()}</li>`).join("");
+                        modalContent.innerHTML = docList;
+                    }
+    
+                    modal.style.display = "block";
+                });
+            });
+    
+            closeModal.addEventListener("click", function () {
+                modal.style.display = "none";
+            });
+    
+            window.addEventListener("click", function (event) {
+                if (event.target === modal) {
+                    modal.style.display = "none";
+                }
+            });
+        });
+    </script>
+    
+
+    <style>
+        /* Style untuk modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 15% auto;
+            padding: 20px;
+            width: 50%;
+            border-radius: 8px;
+        }
+
+        .close {
+            float: right;
+            font-size: 28px;
+            cursor: pointer;
+        }
+    </style>
+
+</body>
+</html>

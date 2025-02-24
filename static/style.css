@@ -1,0 +1,157 @@
+/* Global Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+}
+
+/* Container */
+.container {
+    width: 90%;
+    margin: auto;
+    text-align: center;
+}
+
+/* Judul */
+h1 {
+    margin-top: 30px;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Tabel */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+/* Styling untuk header dan cell tabel */
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+/* Styling untuk header tabel */
+th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    position: relative; /* Untuk posisi ikon sort */
+}
+
+/* Styling untuk link pada header yang dapat disortir */
+th a {
+    text-decoration: none;
+    color: black;
+}
+
+/* Ikon sort di header */
+th span {
+    margin-left: 5px;
+    font-size: 12px;
+    color: #555;
+}
+
+/* Pagination dan informasi total data */
+.pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-top: 2px solid #ddd;
+}
+
+.pagination span {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.pagination .pages {
+    display: flex;
+}
+
+.pagination a {
+    padding: 8px 12px;
+    margin: 0 5px;
+    text-decoration: none;
+    border: 1px solid #ddd;
+    color: black;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.pagination a.active {
+    background-color: #333;
+    color: white;
+}
+
+.pagination a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+/* Styling untuk form dan filter */
+.filters {
+    margin-bottom: 20px;
+}
+
+.filters label {
+    margin-right: 10px;
+}
+
+.filters input,
+.filters select {
+    padding: 5px;
+    margin-right: 10px;
+}
+
+.filters button {
+    padding: 6px 12px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.filters button:hover {
+    background-color: #45a049;
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+    .container {
+        width: 100%;
+    }
+
+    .filters {
+        text-align: left;
+    }
+
+    .filters label,
+    .filters input,
+    .filters select,
+    .filters button {
+        display: block;
+        margin: 5px 0;
+    }
+
+    .pagination {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+/* Kolom Nama rata kiri */
+td:first-child {
+    text-align: left;
+}
+
+/* Header kolom Nama rata kiri */
+th:first-child {
+    text-align: left;
+}
